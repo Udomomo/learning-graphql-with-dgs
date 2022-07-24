@@ -7,7 +7,7 @@ import com.udomomo.learninggraphql.service.PhotoService
 import graphql.schema.DataFetchingEnvironment
 
 @DgsComponent
-class PostPhotoMutation(val photoService: PhotoService) {
+class PhotoMutation(val photoService: PhotoService) {
     @DgsMutation
     fun postPhoto(dataFetchingEnvironment: DataFetchingEnvironment): Photo {
         val name: String = dataFetchingEnvironment.getArgument("name")

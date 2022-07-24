@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 
-@SpringBootTest(classes = [DgsAutoConfiguration::class, PostPhotoMutation::class])
-class PostPhotoMutationTest {
+@SpringBootTest(classes = [DgsAutoConfiguration::class, PhotoMutation::class])
+class PhotoMutationTest {
     @Autowired
     lateinit var dgsQueryExecutor: DgsQueryExecutor
 
