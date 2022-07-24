@@ -11,6 +11,10 @@ class PhotoDataFetcher {
     @DgsQuery
     fun totalPhotos(): Int = 42
 
+    /**
+     * Invoked only when Photo in query result contains url field.
+     * See <a href="https://netflix.github.io/dgs/datafetching/#child-datafetchers">official doc</a>.
+     */
     @DgsData(parentType = "Photo", field = "url")
     fun url(dfe: DgsDataFetchingEnvironment): String {
         val photo: Photo = dfe.getSource()
