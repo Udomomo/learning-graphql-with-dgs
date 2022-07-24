@@ -12,7 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 
-@SpringBootTest(classes = [DgsAutoConfiguration::class, PhotoMutation::class])
+@SpringBootTest(
+    classes = [
+        DgsAutoConfiguration::class,
+        PhotoMutation::class,
+        PhotoDataFetcher::class // Added since tests for url use child datafetcher
+    ]
+)
 class PhotoMutationTest {
     @Autowired
     lateinit var dgsQueryExecutor: DgsQueryExecutor
@@ -24,13 +30,12 @@ class PhotoMutationTest {
     fun before() {
         Mockito.`when`(photoService.savePhoto(Mockito.anyString(), Mockito.anyString()))
             .thenReturn(Photo(1, "dog", "my dog"))
-        Mockito.`when`(photoService.savePhoto(Mockito.anyString(), Mockito.eq(null)))
-            .thenReturn(Photo(1, "dog", null))
+        Mockito.`when`(photoService.savePhoto(Mockito.anyString(), Mockito.eq(null))).thenReturn(Photo(1, "dog", null))
     }
 
     @Test
     fun postPhoto() {
-        val names: String = dgsQueryExecutor.executeAndExtractJsonPath(
+        val name: String = dgsQueryExecutor.executeAndExtractJsonPath(
             """
             mutation {
                 postPhoto(name:"dog", description:"my dog") {
@@ -42,12 +47,12 @@ class PhotoMutationTest {
             """.trimIndent(),
             "data.postPhoto.name"
         )
-        assertThat(names).isEqualTo("dog")
+        assertThat(name).isEqualTo("dog")
     }
 
     @Test
     fun postPhotoWithoutDescription() {
-        val names: String = dgsQueryExecutor.executeAndExtractJsonPath(
+        val name: String = dgsQueryExecutor.executeAndExtractJsonPath(
             """
             mutation {
                 postPhoto(name:"dog") {
@@ -59,6 +64,24 @@ class PhotoMutationTest {
             """.trimIndent(),
             "data.postPhoto.name"
         )
-        assertThat(names).isEqualTo("dog")
+        assertThat(name).isEqualTo("dog")
+    }
+
+    @Test
+    fun postPhotoAndGetUrl() {
+        val url: String = dgsQueryExecutor.executeAndExtractJsonPath(
+            """
+            mutation {
+                postPhoto(name:"dog") {
+                    id
+                    url
+                    name
+                    description
+                }
+            }
+            """.trimIndent(),
+            "data.postPhoto.url"
+        )
+        assertThat(url).isEqualTo("http://yoursite.com/img/1.jpg")
     }
 }
