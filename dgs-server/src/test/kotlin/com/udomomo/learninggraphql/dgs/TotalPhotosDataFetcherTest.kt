@@ -1,4 +1,4 @@
-package com.udomomo.learninggraphql.datafetcher
+package com.udomomo.learninggraphql.dgs
 
 import com.netflix.graphql.dgs.DgsQueryExecutor
 import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
