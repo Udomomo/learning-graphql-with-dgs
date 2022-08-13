@@ -2,12 +2,14 @@ package com.udomomo.learninggraphql.dgs
 
 import com.netflix.graphql.dgs.DgsQueryExecutor
 import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
+import com.udomomo.learninggraphql.domain.PhotoCategory
 import com.udomomo.learninggraphql.entity.Photo
 import com.udomomo.learninggraphql.service.PhotoService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
+import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -28,24 +30,30 @@ class PhotoMutationTest {
 
     @BeforeEach
     fun before() {
-        Mockito.`when`(photoService.savePhoto(Mockito.anyString(), Mockito.anyString()))
-            .thenReturn(Photo(1, "dog", "my dog"))
-        Mockito.`when`(photoService.savePhoto(Mockito.anyString(), Mockito.eq(null))).thenReturn(Photo(1, "dog", null))
+        // Mockito.any() fails in Kotlin, so we use mockito-kotlin here.
+        whenever(photoService.savePhoto(any())).thenReturn(Photo(1, "dog", PhotoCategory.PORTRAIT, "my dog"))
     }
 
     @Test
     fun postPhoto() {
+        // ${'$'} is a workaround to use dollar sign in raw string in Kotlin.
+        // See https://kotlinlang.org/docs/strings.html#string-templates .
         val name: String = dgsQueryExecutor.executeAndExtractJsonPath(
             """
-            mutation {
-                postPhoto(name:"dog", description:"my dog") {
+            mutation (${'$'}input: PostPhotoInput!) {
+                postPhoto(input: ${'$'}input) {
                   id
                   name
+                  category
                   description
                 }
             }
             """.trimIndent(),
-            "data.postPhoto.name"
+            "data.postPhoto.name",
+            // Pass input for query in the `variables` argument.
+            mapOf(
+                "input" to mapOf("name" to "dog", "description" to "my dog")
+            )
         )
         assertThat(name).isEqualTo("dog")
     }
@@ -54,15 +62,19 @@ class PhotoMutationTest {
     fun postPhotoWithoutDescription() {
         val name: String = dgsQueryExecutor.executeAndExtractJsonPath(
             """
-            mutation {
-                postPhoto(name:"dog") {
-                    id
-                    name
-                    description
+            mutation (${'$'}input: PostPhotoInput!) {
+                postPhoto(input: ${'$'}input) {
+                  id
+                  name
+                  category
+                  description
                 }
             }
             """.trimIndent(),
-            "data.postPhoto.name"
+            "data.postPhoto.name",
+            mapOf(
+                "input" to mapOf("name" to "dog")
+            )
         )
         assertThat(name).isEqualTo("dog")
     }
@@ -71,16 +83,20 @@ class PhotoMutationTest {
     fun postPhotoAndGetUrl() {
         val url: String = dgsQueryExecutor.executeAndExtractJsonPath(
             """
-            mutation {
-                postPhoto(name:"dog") {
-                    id
-                    url
-                    name
-                    description
+            mutation (${'$'}input: PostPhotoInput!) {
+                postPhoto(input: ${'$'}input) {
+                  id
+                  url
+                  name
+                  category
+                  description
                 }
             }
             """.trimIndent(),
-            "data.postPhoto.url"
+            "data.postPhoto.url",
+            mapOf(
+                "input" to mapOf("name" to "dog", "description" to "my dog")
+            )
         )
         assertThat(url).isEqualTo("http://yoursite.com/img/1.jpg")
     }
