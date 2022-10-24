@@ -1,7 +1,11 @@
 spring:
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb
-    username: graphql
-    password:
-  h2.console.enabled: true
+  data:
+    mongodb:
+      username: root
+      password: root
+      host: localhost
+      port: 27017
+      database: graphql-practice
+      # MongoDB doesn't create a new database until actual data comes,
+      # so we need to specify initial database for authentication.
+      authentication-database: admin
