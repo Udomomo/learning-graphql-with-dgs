@@ -1,6 +1,6 @@
 package com.udomomo.learninggraphql.repository
 
 import com.udomomo.learninggraphql.entity.Photo
-import org.springframework.data.repository.CrudRepository
+import org.springframework.data.mongodb.repository.MongoRepository
 
-interface PhotoRepository : CrudRepository<Photo, Long>
+interface PhotoRepository : MongoRepository<Photo, Long>
