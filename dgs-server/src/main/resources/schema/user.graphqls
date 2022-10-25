@@ -1,0 +1,14 @@
+type User {
+    id: ID!
+    githubLogin: String
+    name: String
+}
+
+input PostUserInput {
+    githubLogin: String!
+    name: String!
+}
+
+extend type Mutation {
+    postUser(input: PostUserInput): User!
+}

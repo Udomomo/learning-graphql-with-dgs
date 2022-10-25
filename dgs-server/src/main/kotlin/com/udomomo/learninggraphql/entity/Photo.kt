@@ -1,17 +1,16 @@
 package com.udomomo.learninggraphql.entity
 
 import com.udomomo.learninggraphql.domain.PhotoCategory
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import org.bson.types.ObjectId
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 
-@Entity
+@Document("photos")
 data class Photo(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    val id: ObjectId = ObjectId.get(),
     val name: String,
     val category: PhotoCategory,
-    val description: String?
+    val description: String?,
+    val githubUser: String
 )

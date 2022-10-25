@@ -31,7 +31,7 @@ class PhotoMutationTest {
     @BeforeEach
     fun before() {
         // Mockito.any() fails in Kotlin, so we use mockito-kotlin here.
-        whenever(photoService.savePhoto(any())).thenReturn(Photo(1, "dog", PhotoCategory.PORTRAIT, "my dog"))
+        whenever(photoService.savePhoto(any())).thenReturn(Photo(1, "dog", PhotoCategory.PORTRAIT, "my dog", "curl"))
     }
 
     @Test

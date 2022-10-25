@@ -12,7 +12,8 @@ class PhotoService(val photoRepository: PhotoRepository) {
             Photo(
                 name = photoInput.name,
                 category = photoInput.category,
-                description = photoInput.description
+                description = photoInput.description,
+                githubUser = photoInput.githubUser
             )
         )
     }

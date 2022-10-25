@@ -12,6 +12,7 @@ type Photo {
     name: String!
     description: String
     category: PhotoCategory!
+    postedBy: User!
 }
 
 type Query {
@@ -22,6 +23,7 @@ input PostPhotoInput {
     name: String!
     category: PhotoCategory=PORTRAIT
     description: String
+    githubUser: String!
 }
 
 type Mutation {
