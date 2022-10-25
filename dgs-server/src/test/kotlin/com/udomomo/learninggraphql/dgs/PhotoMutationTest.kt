@@ -5,7 +5,9 @@ import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
 import com.udomomo.learninggraphql.domain.PhotoCategory
 import com.udomomo.learninggraphql.entity.Photo
 import com.udomomo.learninggraphql.service.PhotoService
+import com.udomomo.learninggraphql.service.UserService
 import org.assertj.core.api.Assertions.assertThat
+import org.bson.types.ObjectId
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -28,10 +30,14 @@ class PhotoMutationTest {
     @MockBean
     lateinit var photoService: PhotoService
 
+    @MockBean
+    lateinit var userService: UserService
+
     @BeforeEach
     fun before() {
         // Mockito.any() fails in Kotlin, so we use mockito-kotlin here.
-        whenever(photoService.savePhoto(any())).thenReturn(Photo(1, "dog", PhotoCategory.PORTRAIT, "my dog", "curl"))
+        // Create static ObjectId value by passing 24-byte hex string.
+        whenever(photoService.savePhoto(any())).thenReturn(Photo(ObjectId("1234567890abcdef12345678"), "dog", PhotoCategory.PORTRAIT, "my dog", "curl"))
     }
 
     @Test
@@ -52,7 +58,7 @@ class PhotoMutationTest {
             "data.postPhoto.name",
             // Pass input for query in the `variables` argument.
             mapOf(
-                "input" to mapOf("name" to "dog", "description" to "my dog")
+                "input" to mapOf("name" to "dog", "description" to "my dog", "githubUser" to "john")
             )
         )
         assertThat(name).isEqualTo("dog")
@@ -73,7 +79,7 @@ class PhotoMutationTest {
             """.trimIndent(),
             "data.postPhoto.name",
             mapOf(
-                "input" to mapOf("name" to "dog")
+                "input" to mapOf("name" to "dog", "githubUser" to "john")
             )
         )
         assertThat(name).isEqualTo("dog")
@@ -95,9 +101,9 @@ class PhotoMutationTest {
             """.trimIndent(),
             "data.postPhoto.url",
             mapOf(
-                "input" to mapOf("name" to "dog", "description" to "my dog")
+                "input" to mapOf("name" to "dog", "description" to "my dog", "githubUser" to "john")
             )
         )
-        assertThat(url).isEqualTo("http://yoursite.com/img/1.jpg")
+        assertThat(url).isEqualTo("http://yoursite.com/img/1234567890abcdef12345678.jpg")
     }
 }
