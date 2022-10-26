@@ -13,7 +13,3 @@ class GithubUser(
     val githubLogin: String,
     val name: String
 )
-
-data class GithubLogin(
-    val githubLogin: String
-)

@@ -9,6 +9,7 @@ input PostUserInput {
     name: String!
 }
 
+# We can't use same type name throughout all `.graphqls` file, so we add `extend`.
 extend type Mutation {
     postUser(input: PostUserInput): User!
 }

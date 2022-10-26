@@ -6,12 +6,18 @@ import com.netflix.graphql.dgs.DgsDataFetchingEnvironment
 import com.netflix.graphql.dgs.DgsQuery
 import com.udomomo.learninggraphql.entity.GithubUser
 import com.udomomo.learninggraphql.entity.Photo
+import com.udomomo.learninggraphql.service.PhotoService
 import com.udomomo.learninggraphql.service.UserService
 
 @DgsComponent
-class PhotoDataFetcher(val userService: UserService) {
+class PhotoDataFetcher(val photoService: PhotoService, val userService: UserService) {
     @DgsQuery
     fun totalPhotos(): Int = 42
+
+    @DgsQuery
+    fun allPhotos(): List<Photo> {
+        return photoService.list()
+    }
 
     /**
      * Invoked only when Photo in query result contains url field.

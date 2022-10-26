@@ -17,6 +17,7 @@ type Photo {
 
 type Query {
     totalPhotos: Int!
+    allPhotos: [Photo!]!
 }
 
 input PostPhotoInput {
