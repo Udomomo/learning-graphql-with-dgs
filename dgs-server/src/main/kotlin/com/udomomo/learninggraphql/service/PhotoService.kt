@@ -14,16 +14,16 @@ class PhotoService(val photoRepository: PhotoRepository, val userRepository: Use
                 name = photoInput.name,
                 category = photoInput.category,
                 description = photoInput.description,
-                githubUser = photoInput.githubUser
+                githubLogin = photoInput.githubUser
             )
         )
     }
 
-    fun listByUser(githubLogin: String): List<Photo> {
-        return photoRepository.findByGithubUser(githubLogin)
+    fun listByGithubLogin(githubLogin: String): List<Photo> {
+        return photoRepository.findByGithubLogin(githubLogin)
     }
 
-    fun list(): List<Photo> {
+    fun listAll(): List<Photo> {
         return photoRepository.findAll()
     }
 }

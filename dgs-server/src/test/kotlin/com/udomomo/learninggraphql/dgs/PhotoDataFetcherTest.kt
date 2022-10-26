@@ -30,7 +30,7 @@ class PhotoDataFetcherTest {
 
     @BeforeEach
     fun before() {
-        whenever(photoService.list()).thenReturn(listOf(Photo(ObjectId("1234567890abcdef12345678"), "dog", PhotoCategory.PORTRAIT, "my dog", "curl")))
+        whenever(photoService.listAll()).thenReturn(listOf(Photo(ObjectId("1234567890abcdef12345678"), "dog", PhotoCategory.PORTRAIT, "my dog", "curl")))
         whenever(userService.findByLogin(any())).thenReturn(GithubUser(ObjectId("1234567890abcdef12345678"), "john", "John"))
     }
 

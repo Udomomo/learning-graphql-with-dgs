@@ -12,6 +12,6 @@ class UserDataFetcher(val photoService: PhotoService) {
     @DgsData(parentType = "User", field = "postedPhotos")
     fun postedPhotos(dfe: DgsDataFetchingEnvironment): List<Photo> {
         val user: GithubUser = dfe.getSource()
-        return photoService.listByUser(user.githubLogin)
+        return photoService.listByGithubLogin(user.githubLogin)
     }
 }

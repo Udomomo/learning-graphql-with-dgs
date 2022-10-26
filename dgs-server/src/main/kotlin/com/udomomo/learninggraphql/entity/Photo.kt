@@ -12,5 +12,5 @@ data class Photo(
     val name: String,
     val category: PhotoCategory,
     val description: String?,
-    val githubUser: String
+    val githubLogin: String
 )
