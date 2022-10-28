@@ -13,6 +13,7 @@ type Photo {
     description: String
     category: PhotoCategory!
     postedBy: User!
+    taggedUsers: [User!]!
 }
 
 type Query {
@@ -25,6 +26,7 @@ input PostPhotoInput {
     category: PhotoCategory=PORTRAIT
     description: String
     githubUser: String!
+    taggedUsers: [String!]!
 }
 
 type Mutation {

@@ -37,7 +37,7 @@ class PhotoMutationTest {
     fun before() {
         // Mockito.any() fails in Kotlin, so we use mockito-kotlin here.
         // Create static ObjectId value by passing 24-byte hex string.
-        whenever(photoService.savePhoto(any())).thenReturn(Photo(ObjectId("1234567890abcdef12345678"), "dog", PhotoCategory.PORTRAIT, "my dog", "curl"))
+        whenever(photoService.savePhoto(any())).thenReturn(Photo(ObjectId("1234567890abcdef12345678"), "dog", PhotoCategory.PORTRAIT, "my dog", "curl", emptyList()))
     }
 
     @Test

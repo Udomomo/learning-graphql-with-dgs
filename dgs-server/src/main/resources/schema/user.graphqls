@@ -2,6 +2,7 @@ type User {
     id: ID!
     githubLogin: String
     name: String
+    inPhotos: [Photo!]!
 }
 
 input PostUserInput {

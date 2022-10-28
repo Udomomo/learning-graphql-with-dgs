@@ -14,4 +14,10 @@ class UserDataFetcher(val photoService: PhotoService) {
         val user: GithubUser = dfe.getSource()
         return photoService.listByGithubLogin(user.githubLogin)
     }
+
+    @DgsData(parentType = "User", field = "inPhotos")
+    fun inPhotos(dfe: DgsDataFetchingEnvironment): List<Photo> {
+        val user: GithubUser = dfe.getSource()
+        return photoService.listTaggedPhotos(user.id)
+    }
 }
