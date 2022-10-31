@@ -2,12 +2,11 @@ package com.udomomo.learninggraphql.dgs
 
 import com.netflix.graphql.dgs.DgsQueryExecutor
 import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
-import com.udomomo.learninggraphql.domain.PhotoCategory
-import com.udomomo.learninggraphql.entity.Photo
+import com.udomomo.learninggraphql.dto.PhotoCategory
+import com.udomomo.learninggraphql.dto.PhotoResponse
 import com.udomomo.learninggraphql.service.PhotoService
 import com.udomomo.learninggraphql.service.UserService
 import org.assertj.core.api.Assertions.assertThat
-import org.bson.types.ObjectId
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -37,7 +36,7 @@ class PhotoMutationTest {
     fun before() {
         // Mockito.any() fails in Kotlin, so we use mockito-kotlin here.
         // Create static ObjectId value by passing 24-byte hex string.
-        whenever(photoService.savePhoto(any())).thenReturn(Photo(ObjectId("1234567890abcdef12345678"), "dog", PhotoCategory.PORTRAIT, "my dog", "curl", emptyList()))
+        whenever(photoService.savePhoto(any())).thenReturn(PhotoResponse("1234567890abcdef12345678", "dog", PhotoCategory.PORTRAIT, "my dog", "curl", emptyList()))
     }
 
     @Test

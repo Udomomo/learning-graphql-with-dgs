@@ -5,7 +5,6 @@ import com.netflix.graphql.dgs.autoconfig.DgsAutoConfiguration
 import com.udomomo.learninggraphql.entity.GithubUser
 import com.udomomo.learninggraphql.service.UserService
 import org.assertj.core.api.Assertions
-import org.bson.types.ObjectId
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
@@ -31,7 +30,7 @@ class UserMutationTest {
     fun before() {
         // Mockito.any() fails in Kotlin, so we use mockito-kotlin here.
         // Create static ObjectId value by passing 24-byte hex string.
-        whenever(userService.saveUser(any())).thenReturn(GithubUser(ObjectId("1234567890abcdef12345678"), "john", "John"))
+        whenever(userService.saveUser(any())).thenReturn(GithubUser("john", "John"))
     }
 
     @Test

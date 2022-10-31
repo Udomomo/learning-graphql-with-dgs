@@ -1,4 +1,4 @@
-package com.udomomo.learninggraphql.domain
+package com.udomomo.learninggraphql.dto
 
 enum class PhotoCategory {
     SELFIE,

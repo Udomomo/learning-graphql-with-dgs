@@ -4,8 +4,8 @@ import com.netflix.graphql.dgs.DgsComponent
 import com.netflix.graphql.dgs.DgsData
 import com.netflix.graphql.dgs.DgsDataFetchingEnvironment
 import com.netflix.graphql.dgs.DgsQuery
+import com.udomomo.learninggraphql.dto.PhotoResponse
 import com.udomomo.learninggraphql.entity.GithubUser
-import com.udomomo.learninggraphql.entity.Photo
 import com.udomomo.learninggraphql.service.PhotoService
 import com.udomomo.learninggraphql.service.UserService
 
@@ -15,7 +15,7 @@ class PhotoDataFetcher(val photoService: PhotoService, val userService: UserServ
     fun totalPhotos(): Int = 42
 
     @DgsQuery
-    fun allPhotos(): List<Photo> {
+    fun allPhotos(): List<PhotoResponse> {
         return photoService.listAll()
     }
 
@@ -25,19 +25,19 @@ class PhotoDataFetcher(val photoService: PhotoService, val userService: UserServ
      */
     @DgsData(parentType = "Photo", field = "url")
     fun url(dfe: DgsDataFetchingEnvironment): String {
-        val photo: Photo = dfe.getSource()
-        return "http://yoursite.com/img/${photo.id}.jpg"
+        val photoResponse: PhotoResponse = dfe.getSource()
+        return "http://yoursite.com/img/${photoResponse.id}.jpg"
     }
 
     @DgsData(parentType = "Photo", field = "postedBy")
     fun postedBy(dfe: DgsDataFetchingEnvironment): GithubUser {
-        val photo: Photo = dfe.getSource()
-        return userService.findByGithubLogin(photo.githubLogin)
+        val photoResponse: PhotoResponse = dfe.getSource()
+        return userService.findByGithubLogin(photoResponse.githubLogin)
     }
 
     @DgsData(parentType = "Photo", field = "taggedUsers")
     fun taggedUsers(dfe: DgsDataFetchingEnvironment): List<GithubUser> {
-        val photo: Photo = dfe.getSource()
-        return userService.listTaggedUsers(photo.id)
+        val photoResponse: PhotoResponse = dfe.getSource()
+        return userService.listTaggedUsers(photoResponse.id)
     }
 }

@@ -1,6 +1,6 @@
-package com.udomomo.learninggraphql.domain
+package com.udomomo.learninggraphql.dto
 
-data class PostPhotoInput(
+data class PhotoRequest(
     val name: String,
     val category: PhotoCategory,
     val description: String?,

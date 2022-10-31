@@ -1,17 +1,18 @@
 package com.udomomo.learninggraphql.service
 
-import com.udomomo.learninggraphql.domain.PostPhotoInput
+import com.udomomo.learninggraphql.dto.PhotoRequest
+import com.udomomo.learninggraphql.dto.PhotoResponse
 import com.udomomo.learninggraphql.entity.Photo
+import com.udomomo.learninggraphql.entity.Tag
 import com.udomomo.learninggraphql.repository.PhotoRepository
 import com.udomomo.learninggraphql.repository.TagRepository
-import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
 
 @Service
 class PhotoService(val photoRepository: PhotoRepository, val tagRepository: TagRepository) {
-    fun savePhoto(photoInput: PostPhotoInput): Photo {
+    fun savePhoto(photoInput: PhotoRequest): PhotoResponse {
         // TODO: throw custom exception if user in taggedUser doesn't exist
-        return photoRepository.save(
+        val result = photoRepository.save(
             Photo(
                 name = photoInput.name,
                 category = photoInput.category,
@@ -20,18 +21,29 @@ class PhotoService(val photoRepository: PhotoRepository, val tagRepository: TagR
                 taggedUsers = photoInput.taggedUsers
             )
         )
+
+        photoInput.taggedUsers.forEach {
+            tagRepository.save(
+                Tag(result.id, it)
+            )
+        }
+
+        return PhotoResponse.of(result)
     }
 
-    fun listByGithubLogin(githubLogin: String): List<Photo> {
+    fun listByGithubLogin(githubLogin: String): List<PhotoResponse> {
         return photoRepository.findByGithubLogin(githubLogin)
+            .map { PhotoResponse.of(it) }
     }
 
-    fun listAll(): List<Photo> {
+    fun listAll(): List<PhotoResponse> {
         return photoRepository.findAll()
+            .map { PhotoResponse.of(it) }
     }
 
-    fun listTaggedPhotos(userId: ObjectId): List<Photo> {
-        val photoIds = tagRepository.findByUserId(userId).map { it.photoId }
+    fun listTaggedPhotos(githubLogin: String): List<PhotoResponse> {
+        val photoIds = tagRepository.findByGithubLogin(githubLogin).map { it.photoId }
         return photoRepository.findByIdIn(photoIds)
+            .map { PhotoResponse.of(it) }
     }
 }

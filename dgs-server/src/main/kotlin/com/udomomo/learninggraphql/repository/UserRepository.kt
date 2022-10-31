@@ -8,6 +8,4 @@ interface UserRepository : MongoRepository<GithubUser, ObjectId> {
     fun findByGithubLogin(githubLogin: String): GithubUser
 
     fun findByGithubLoginIn(githubLogins: List<String>): List<GithubUser>
-
-    fun findByIdIn(ids: List<ObjectId>): List<GithubUser>
 }
