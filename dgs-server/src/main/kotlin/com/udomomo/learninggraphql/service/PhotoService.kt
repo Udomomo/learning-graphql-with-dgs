@@ -4,14 +4,21 @@ import com.udomomo.learninggraphql.dto.PhotoRequest
 import com.udomomo.learninggraphql.dto.PhotoResponse
 import com.udomomo.learninggraphql.entity.Photo
 import com.udomomo.learninggraphql.entity.Tag
+import com.udomomo.learninggraphql.exception.UserNotFoundException
 import com.udomomo.learninggraphql.repository.PhotoRepository
 import com.udomomo.learninggraphql.repository.TagRepository
+import com.udomomo.learninggraphql.repository.UserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class PhotoService(val photoRepository: PhotoRepository, val tagRepository: TagRepository) {
+class PhotoService(val photoRepository: PhotoRepository, val userRepository: UserRepository, val tagRepository: TagRepository) {
     fun savePhoto(photoInput: PhotoRequest): PhotoResponse {
-        // TODO: throw custom exception if user in taggedUser doesn't exist
+        val taggedUsers = photoInput.taggedUsers
+        if (taggedUsers.isNotEmpty()) {
+            val allUsers = userRepository.findAll().map { it.githubLogin }
+            if (!allUsers.containsAll(taggedUsers)) throw UserNotFoundException("Some users do not exist")
+        }
+
         val result = photoRepository.save(
             Photo(
                 name = photoInput.name,
