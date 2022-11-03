@@ -13,10 +13,4 @@ This is an implementation of the sample photo application in [Learning GraphQL](
 - Log in with `mongosh -u root -p`
 - Choose db by `use graphql-practice;`
 - Check collection by `show collections;` , and get data by `db.<collection name>.find;`
-
-### How to make id automatically generated?
-- Specify `ObjectId` for `id` column on Entity. Field named `id` is automatically mapped to MongoDB's `_id` column.
-- We can generate value by `ObjectId.get()`.
-
-
-
+- If you connect from Intellij, don't forget to specify `authSource` as `admin`.
